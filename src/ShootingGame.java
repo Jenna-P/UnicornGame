@@ -18,6 +18,8 @@ public class ShootingGame extends JFrame {
 
     public static Game game = new Game();
 
+    private Audio backgroundMusic;
+
     public ShootingGame() {
         setTitle("Shooting Game");
         setUndecorated(true);
@@ -37,6 +39,9 @@ public class ShootingGame extends JFrame {
         isMainScreen = true;
         isLoadingScreen = false;
         isGameScreen = false;
+
+        backgroundMusic = new Audio("src/audio/menuBGM.wav", true);
+        backgroundMusic.start();
         KeyListener keylistener = new KeyListener();
         addKeyListener(keylistener);
     }
@@ -50,14 +55,15 @@ public class ShootingGame extends JFrame {
         TimerTask loadingTask = new TimerTask() {
             @Override
             public void run() {
+                backgroundMusic.stop();
                 isLoadingScreen = false;
                 isGameScreen = true;
+                game.start(); //Game class의  Thred 를 시작하기 위해
             }
         };
         //Timer 와 TimerTask 를 이용해 로딩화면에서 3초 후에 게임화면으로 넘어가도록 함
         loadingTimer.schedule(loadingTask, 3000);
 
-        game.start(); //Game class의  Thred 를 시작하기 위해
     }
 
     //페인트 메소드에서 버퍼 이미지를 만들고 이를 화면에 뿌려줌으로써 깜빡임을 최소화 한다.
